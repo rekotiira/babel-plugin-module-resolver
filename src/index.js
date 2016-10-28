@@ -120,7 +120,13 @@ export default ({ types: t }) => {
         },
 
         manipulateOptions(babelOptions) {
-            const findPluginOptions = babelOptions.plugins.find(plugin => plugin[0] === this)[1];
+            let findPluginOptions;
+            for (let i = 0, l = babelOptions.plugins.length; i < l; ++i) {
+                if (babelOptions.plugins[i][0] === this) {
+                    findPluginOptions = babelOptions.plugins[i][1];
+                    break;
+                }
+            }
             if (findPluginOptions.root) {
                 findPluginOptions.root = findPluginOptions.root.reduce((resolvedDirs, dirPath) => {
                     if (glob.hasMagic(dirPath)) {
